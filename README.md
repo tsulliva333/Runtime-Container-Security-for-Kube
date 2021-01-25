@@ -5,8 +5,7 @@ This tutorial demonstrates how NeuVector integrates with IBM Cloud Container Ser
 
 ## Why container security is critical
 
-Containers technology makes it easy to deploy applications in the cloud. Kubernetes is one of the popular choices for deploying containerized applications. Vulnerabilities in applications residing within a container can be exploited if the right protectsions 
-
+Containers technology makes it easy to deploy applications in the cloud. Kubernetes is one of the popular choices for deploying containerized applications. Vulnerabilities in applications residing within a container can be exploited if the right protections.
 
 ## About IBM Cloud
 
@@ -35,7 +34,7 @@ After the prerequistes are met, this tutorial should take you approximately 30 m
 ## Steps
 
 1. [Instantiate a Kubernetes cluster in IBM Cloud](#step-1-instantiate-a-kubernetes-cluster-in-ibm-cloud)
-2. [Deploy NeuVector onto the cluster](#step-2-deploy-neuvector-onto-the-cluster)
+2. [Deploy NeuVector onto the Kubernetes cluster](#step-2-deploy-neuvector-onto-the-kubernetes-cluster)
 3. [Generate test traffic by running sample applications](#step-3-generate-test-traffic-by-running-sample-applications)
 
 
@@ -107,7 +106,7 @@ $ kubectl create namespace neuvector
 You should get a response of ```namepsace/neuvector created```
 
 
-5. onfigure Kubernetes to pull from the private NeuVector registry on Docker Hub. You do this by creating a secret:
+5. Cnfigure Kubernetes to pull from the private NeuVector registry on Docker Hub. You do this by creating a secret:
 
 ```
 $ kubectl create secret docker-registry regsecret -n neuvector --docker-server=https://index.docker.io/v1/ --docker-username="<docker id>" --docker-password="<pwd>" --docker-email="<email>"
