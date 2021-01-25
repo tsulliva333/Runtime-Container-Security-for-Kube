@@ -5,9 +5,8 @@ This tutorial demonstrates how NeuVector integrates with IBM Cloud Container Ser
 
 ## Why container security is critical
 
-xxxxxxxxx
-xxxxxxx
-xxxx
+Containers technology makes it easy to deploy applications in the cloud. Kubernetes is one of the popular choices for deploying containerized applications. Vulnerabilities in applications residing within a container can be exploited if the right protectsions 
+
 
 ## About IBM Cloud
 
@@ -76,15 +75,17 @@ See the [IBM Cloud documentation](https://cloud.ibm.com/docs/containers/cs_plann
 
 You can also create a cluster from the command line, use the following command:
 
-``
-bx cs cluster-create -name -location -workers 2 -machine-type u1cx2x4 -hardware shared -public-vlan -private-vlan
-``
+```
+$ bx cs cluster-create -name -location -workers 2 -machine-type u1cx2x4 -hardware shared -public-vlan -private-vlan
+```
 
-### Step 2. Deploy NeuVector onto the cluster
+### Step 2. Deploy NeuVector onto the Kubernetes cluster
 
 Now that the environment is provisioned, you can access it from the IBM Cloud CLI. Download the CLI tool and login to your cluster following the instructions in the Access tab. Enter the following command:
 
-`curl -sL https://ibm.biz/idt-installer | bash`
+```
+$ curl -sL https://ibm.biz/idt-installer | bash
+```
 
 <img src="./images/cluster.png" width="100%" height="100%" alt="Component Model"  class="inline"/>
 
@@ -97,20 +98,20 @@ Follow the instructions on the screen to
 3. Verify that you can connect to your cluster
 
 
-Create the namespace for NeuVector. Enter the following command:
+4. Create the namespace for NeuVector. Enter the following command:
 
-``
-kubectl create namespace neuvector
-``
+```
+$ kubectl create namespace neuvector
+```
 
-You should get a response of `` namepsace/neuvector created``
+You should get a response of ```namepsace/neuvector created```
 
 
-Next, create a secret for pulling the NeuVector container from Docker Hub, filling in your Docker UserID, Docker password and Docker email:
+5. onfigure Kubernetes to pull from the private NeuVector registry on Docker Hub. You do this by creating a secret:
 
-``
-kubectl create secret docker-registry regsecret -n neuvector --docker-server=https://index.docker.io/v1/ --docker-username="<docker id>" --docker-password="<pwd>" --docker-email="<email>"
-``
+```
+$ kubectl create secret docker-registry regsecret -n neuvector --docker-server=https://index.docker.io/v1/ --docker-username="<docker id>" --docker-password="<pwd>" --docker-email="<email>"
+```
 
 Where ’username’ is your Docker username, ’pwd’ is your Docker password, ’email’ is your Docker email.
 
@@ -118,10 +119,14 @@ You should get a response `secret/regsecret created`
 
 Note: Please contact support@neuvector.com to request that your Docker Hub ID be added to the NeuVector private registry.
 
+<!---
+## MAY REMOVE THE FOLLOWING TEXT
+================================================================================================================================================
+
 Label the node where you want to deploy the Allinone container. Replace nodename with the node name from `kubectl get nodes`:
 
 ``
-kubectl label nodes nodename nvallinone=true
+$ kubectl label nodes nodename nvallinone=true
 ``
 
 As an fyi, `Allinone containers` are XXXXXXXXXX.  Note, the Enforcer container will automatically be deployed on other nodes in your cluster.
@@ -130,7 +135,7 @@ Read up on Allinone and Enforcer containers at XXXXXXXXXX
 You will use the ./allinone.yaml file to deploy NeuVector.  Running the following command will create the NeuVector service and pod.
 
 ``
-kubectl create –f allinone.yaml
+$ kubectl create –f allinone.yaml
 ``
 
 You should get the following response:
@@ -146,19 +151,107 @@ daemonset.apps/neuvector-allinone-pod created
 Verify that everything is running
 
 ``
-kubectl get all -n neuvector
+$ kubectl get all -n neuvector
 ``
 
 You should see the following response
 
 <img src="./images/verifyAllinone.png" width="100%" height="100%" alt="Component Model"  class="inline"/>
 
+If you make any changes to your `.yaml` file; you can update the pod and service with the following command:
+
+``
+$ kubectl replace -f allinone.yaml
+``
+
+=============================================================================================================================================
+-->
+
+6. Create the custom resources (CRD) for NeuVector security rules
+
+For Kubernetes 1.19+:
+
+```
+$ kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/crd-k8s-1.19.yaml
+```
+
+For Kubernetes 1.18+ and earlier:
+
+```
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/crd-k8s-1.16.yaml
+```
+
+You will see the following results:
+<img src="./images/CRD-rules.png" width="100%" height="100%" alt="Component Model"  class="inline"/>
+
+
+7. Add read permission to access the kubernetes API. RBAC is supported in kubernetes 1.8+ officially. Admission control is supported in kubernetes 1.9+
+
+```
+kubectl create clusterrole neuvector-binding-app --verb=get,list,watch,update --resource=nodes,pods,services,namespaces
+kubectl create clusterrole neuvector-binding-rbac --verb=get,list,watch --resource=rolebindings.rbac.authorization.k8s.io,roles.rbac.authorization.k8s.io,clusterrolebindings.rbac.authorization.k8s.io,clusterroles.rbac.authorization.k8s.io
+kubectl create clusterrolebinding neuvector-binding-app --clusterrole=neuvector-binding-app --serviceaccount=neuvector:default
+kubectl create clusterrolebinding neuvector-binding-rbac --clusterrole=neuvector-binding-rbac --serviceaccount=neuvector:default
+kubectl create clusterrole neuvector-binding-admission --verb=get,list,watch,create,update,delete --resource=validatingwebhookconfigurations,mutatingwebhookconfigurations
+kubectl create clusterrolebinding neuvector-binding-admission --clusterrole=neuvector-binding-admission --serviceaccount=neuvector:default
+kubectl create clusterrole neuvector-binding-customresourcedefinition --verb=watch,create,get --resource=customresourcedefinitions
+kubectl create clusterrolebinding  neuvector-binding-customresourcedefinition --clusterrole=neuvector-binding-customresourcedefinition --serviceaccount=neuvector:default
+kubectl create clusterrole neuvector-binding-nvsecurityrules --verb=list,delete --resource=nvsecurityrules,nvclustersecurityrules
+kubectl create clusterrolebinding neuvector-binding-nvsecurityrules --clusterrole=neuvector-binding-nvsecurityrules --serviceaccount=neuvector:default
+kubectl create clusterrolebinding neuvector-binding-view --clusterrole=view --serviceaccount=neuvector:default
+kubectl create rolebinding neuvector-admin --clusterrole=admin --serviceaccount=neuvector:default -n neuvector
+```
+
+You will see the following results:
+<img src="./images/Create-NeuVector-pod-and-service.png" width="100%" height="100%" alt="Component Model"  class="inline"/>
+
+**NOTE** If upgrading NeuVector from a previous install, you may need to delete the old binding as follows:
+
+```
+$ kubectl delete clusterrolebinding neuvector-binding
+$ kubectl delete clusterrole neuvector-binding
+```
+
+8. Run the following commands to check if the neuvector/default service account is added successfully
+
+```
+$ kubectl get clusterrolebinding  | grep neuvector
+$ kubectl get rolebinding -n neuvector | grep neuvector
+```
+
+Sample output:
+
+```
+neuvector-binding-admission                            28d
+neuvector-binding-app                                  28d
+neuvector-binding-customresourcedefinition             28d
+neuvector-binding-nvsecurityrules                      28d
+neuvector-binding-rbac                                 28d
+neuvector-binding-view                                 28d
+neuvector-admin   28d
+```
+
+9. Create the neuvector services and pods from the Kubernetes sample yaml below. Important! Replace the <version> tags for the manager, controller and enforcer image references in the yaml file. Also make any other modifications required for your deployment environment
+
+```
+$ kubectl create -f neuvector.yaml
+```
+
+You should be able to connect to the NeuVector console and login with admin:admin, e.g. https://<public-ip>:8443 Don't forget to apply your license file after logging in so that you can see all Nodes, Enforcers and Assets.
+
+**NOTE** The nodeport service specified in the neuvector.yaml file will open a random port on all kubernetes nodes for the NeuVector management web console port. Alternatively, you can use a LoadBalancer or Ingress, using a public IP and default port 8443. For nodeport, be sure to open access through firewalls for that port, if needed. If you want to see which port is open on the host nodes, please do the following commands.
+
+
 ### Step 3. Generate test traffic by running sample applications
 
 If you haven’t already deployed some sample applications, now is a good time to do that so that you’ll be able to see application containers running and their connections in NeuVector.
 
-After generating test traffic through your sample apps, log into the NeuVector console. You’ll need to login the public IP address of your cluster / node, using the random port assigned by the Kubernetes NodePort service. To find that port:
 
+After generating test traffic through your sample apps, log into the NeuVector console. 
+
+<!---
+### REMOVE THE FOLLOWING TEXT
+=========================================================================================================================================================
 ``
 kubectl get svc -n neuvector
 ``
@@ -181,16 +274,19 @@ You can now login to the NeuVector Manager console (WebUI) using the public IP a
 
 Open your favorite web browser by entering:
 
-``
+```
 $ open https://localhost:32256  **Note port in graphic above**
-``
+```
 
 
 BTW - you can also detect the TCP port number of the NeuVector Manager direction using the following command:
 
-``
-kubectl get svc/neuvector-manager-svc -n neuvector
-``
+```
+$ kubectl get svc/neuvector-manager-svc -n neuvector
+```
+
+=========================================================================================================================================================
+-->
 
 Feel free to browse the console, view Network Activity, the Policy Rules and other Resources.
 
