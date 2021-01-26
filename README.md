@@ -42,11 +42,11 @@ After the prerequistes are met, this tutorial should take you approximately 30 m
 
 Log into your IBM Cloud account. Select **Kubernetes** on the left-hand navigation.
 
-<img src="./images/IBMCloud-container.png" width="100%" height="100%" alt="Component Model"  class="inline"/>
+![Screen capture of logging into IBM Cloud](images/IBMCloud-container.png)
 
 You will see the following screen presented:
 
-<img src="./images/kube-create.png" width="100%" height="100%" alt="Component Model"  class="inline"/>
+![Screen capture of accessing Kubernetes on IBM Cloud](images/kube-create.png)
 
 Select `Create a Cluster`
 
@@ -86,9 +86,7 @@ Now that the environment is provisioned, you can access it from the IBM Cloud CL
 $ curl -sL https://ibm.biz/idt-installer | bash
 ```
 
-<img src="./images/cluster.png" width="100%" height="100%" alt="Component Model"  class="inline"/>
-
-![Screen capture of setting up a Kube Cluster in IBM Cloud](images/cluster.png)
+![Screen capture of instructions for installing CLI](images/cluster.png)
 
 Follow the instructions on the screen to 
 
@@ -183,7 +181,7 @@ kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kube
 ```
 
 You will see the following results:
-<img src="./images/CRD-rules.png" width="100%" height="100%" alt="Component Model"  class="inline"/>
+![Screen capture of steps to set up CRD rules](images/CRD-rules.png)
 
 
 7. Add read permission to access the kubernetes API. RBAC is supported in kubernetes 1.8+ officially. Admission control is supported in kubernetes 1.9+
@@ -204,7 +202,8 @@ kubectl create rolebinding neuvector-admin --clusterrole=admin --serviceaccount=
 ```
 
 You will see the following results:
-<img src="./images/Create-NeuVector-pod-and-service.png" width="100%" height="100%" alt="Component Model"  class="inline"/>
+![Screen capture of steps to create the NeuVector pod and service in Kube](images/Create-NeuVector-pod-and-service.png)
+
 
 **NOTE** If upgrading NeuVector from a previous install, you may need to delete the old binding as follows:
 
