@@ -33,12 +33,12 @@ After the prerequistes are met, this tutorial should take you approximately 30 m
 
 ## Steps
 
-1. [Instantiate a Kubernetes cluster in IBM Cloud](#step-1-instantiate-a-kubernetes-cluster-in-ibm-cloud)
-2. [Deploy NeuVector onto the Kubernetes cluster](#step-2-deploy-neuvector-onto-the-kubernetes-cluster)
-3. [Generate test traffic by running sample applications](#step-3-generate-test-traffic-by-running-sample-applications)
+1. [Instantiate a Kubernetes cluster in IBM Cloud](#1-instantiate-a-kubernetes-cluster-in-ibm-cloud)
+2. [Deploy NeuVector onto the Kubernetes cluster](#2-deploy-neuvector-onto-the-Kubernetes-cluster)
+3. [Generate test traffic by running sample applications](#3-generate-test-traffic-by-running-sample-applications)
 
 
-### Step 1. Instantiate a Kubernetes cluster in IBM Cloud
+### 1. Instantiate a Kubernetes cluster in IBM Cloud
 
 Log into your IBM Cloud account. Select **Kubernetes** on the left-hand navigation.
 
@@ -78,7 +78,7 @@ You can also create a cluster from the command line, use the following command:
 $ bx cs cluster-create -name -location -workers 2 -machine-type u1cx2x4 -hardware shared -public-vlan -private-vlan
 ```
 
-### Step 2. Deploy NeuVector onto the Kubernetes cluster
+### 2. Deploy NeuVector onto the Kubernetes cluster
 
 Now that the environment is provisioned, you can access it from the IBM Cloud CLI. Download the CLI tool and login to your cluster following the instructions in the Access tab. Enter the following command:
 
@@ -87,6 +87,7 @@ $ curl -sL https://ibm.biz/idt-installer | bash
 ```
 
 <img src="./images/cluster.png" width="100%" height="100%" alt="Component Model"  class="inline"/>
+![Screen capture of setting up a Kube Cluster in IBM Cloud](./images/cluster.png)
 
 Follow the instructions on the screen to 
 
@@ -106,7 +107,7 @@ $ kubectl create namespace neuvector
 You should get a response of ```namepsace/neuvector created```
 
 
-5. Cnfigure Kubernetes to pull from the private NeuVector registry on Docker Hub. You do this by creating a secret:
+5. Configure Kubernetes to pull from the private NeuVector registry on Docker Hub. You do this by creating a secret:
 
 ```
 $ kubectl create secret docker-registry regsecret -n neuvector --docker-server=https://index.docker.io/v1/ --docker-username="<docker id>" --docker-password="<pwd>" --docker-email="<email>"
@@ -289,11 +290,27 @@ $ kubectl get svc/neuvector-manager-svc -n neuvector
 
 Feel free to browse the console, view Network Activity, the Policy Rules and other Resources.
 
-## Conclusion
+## Summary
 
 IBM Cloud Container Service makes it easy to set up a Kubernetes cluster to host your containerized applications. When running such applications in production, security is required to ensure that applications are safe and communicating properly. NeuVector provides that run-time security in any cloud environment, providing a layer-7 firewall, host and container processes monitoring, and vulnerability scanning solution.  You can request a demo and access to the download by contacting NeuVector at info@neuvector.com.
 
-Try [IBM Cloud Container Service](https://www.ibm.com/cloud/kubernetes-service?cm_mmc=OSocial_Blog-_-Cloud_Cloud+Platform-_-WW_WW-_-NeuVector&cm_mmca1=000023UA&cm_mmca2=10002833&) and [NeuVector](https://go.neuvector.com/tryse) today!!
+## Next Steps
+
+Learn more about the IBM Cloud Container Service and NeuVector.  Additionally, further your knowledge of containers more generally.
+
+* [IBM Cloud Container Service](https://www.ibm.com/cloud/kubernetes-service?cm_mmc=OSocial_Blog-_-Cloud_Cloud+Platform-_-WW_WW-_-NeuVector&cm_mmca1=000023UA&cm_mmca2=10002833&)
+
+* [NeuVector](https://go.neuvector.com/tryse)
+
+* [Containerization: Starting with Docker](https://developer.ibm.com/tutorials/building-docker-images-locally-and-in-cloud/)
+
+* [Getting Started with Containers](https://developer.ibm.com/technologies/containers/gettingstarted/)
+
+* [Learning Path: Kubernetes](https://developer.ibm.com/series/kubernetes-learning-path/)
+
+* [Kubernetes Deployment onto NeuVector](https://docs.neuvector.com:1594/deploying/kubernetes)
+
+
 
 
 
