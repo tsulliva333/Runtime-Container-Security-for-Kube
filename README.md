@@ -87,7 +87,8 @@ $ curl -sL https://ibm.biz/idt-installer | bash
 ```
 
 <img src="./images/cluster.png" width="100%" height="100%" alt="Component Model"  class="inline"/>
-![Screen capture of setting up a Kube Cluster in IBM Cloud](./images/cluster.png)
+
+![Screen capture of setting up a Kube Cluster in IBM Cloud](images/cluster.png)
 
 Follow the instructions on the screen to 
 
@@ -242,7 +243,7 @@ You should be able to connect to the NeuVector console and login with admin:admi
 **NOTE** The nodeport service specified in the neuvector.yaml file will open a random port on all kubernetes nodes for the NeuVector management web console port. Alternatively, you can use a LoadBalancer or Ingress, using a public IP and default port 8443. For nodeport, be sure to open access through firewalls for that port, if needed. If you want to see which port is open on the host nodes, please do the following commands.
 
 
-### Step 3. Generate test traffic by running sample applications
+### 3. Generate test traffic by running sample applications
 
 If you haven’t already deployed some sample applications, now is a good time to do that so that you’ll be able to see application containers running and their connections in NeuVector.
 
