@@ -75,7 +75,7 @@ spec:
     - port: 8443
       name: manager
       protocol: TCP
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: neuvector-manager-pod
 
