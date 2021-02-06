@@ -251,7 +251,7 @@ https://169.51.195.48:32340
 ```
 
 You will see a log in:
-![Screen capture of NeuVector console login](images/Console.login.png)
+![Screen capture of NeuVector console login](images/Console-login.png)
 
 Once you log in, you should see the console:
 ![Screen capture of NeuVector console](images/neuvector-console.png)
