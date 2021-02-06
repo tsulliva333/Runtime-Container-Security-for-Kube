@@ -253,6 +253,9 @@ https://169.51.195.48:32340
 You will see a log in:
 ![Screen capture of NeuVector console login](images/Console-login.png)
 
+
+If you haven't recieved a temporary license for using the NeuVector console, go to [Red Hat Marketplace](https://marketplace.redhat.com/en-us/products/neuvector-operator) and request a free trial. This will give you a license to access the console. 
+
 Once you log in, you should see the console:
 ![Screen capture of NeuVector console](images/neuvector-console.png)
 
