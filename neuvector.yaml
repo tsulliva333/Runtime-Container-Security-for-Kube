@@ -75,7 +75,7 @@ spec:
     - port: 8443
       name: manager
       protocol: TCP
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: neuvector-manager-pod
 
@@ -122,7 +122,7 @@ spec:
         - name: regsecret
       containers:
         - name: neuvector-manager-pod
-          image: neuvector/manager:<version>
+          image: neuvector/manager:4.1.1
           env:
             - name: CTRL_SERVER_IP
               value: neuvector-svc-controller.neuvector
@@ -167,7 +167,7 @@ spec:
         - name: regsecret
       containers:
         - name: neuvector-controller-pod
-          image: neuvector/controller:<version>
+          image: neuvector/controller:4.1.1
           securityContext:
             privileged: true
           readinessProbe:
@@ -192,8 +192,8 @@ spec:
             - mountPath: /var/neuvector
               name: nv-share
               readOnly: false
-            - mountPath: /var/run/docker.sock
-              name: docker-sock
+            - mountPath: /run/containerd/containerd.sock
+              name: runtime-sock
               readOnly: true
             - mountPath: /host/proc
               name: proc-vol
@@ -210,9 +210,9 @@ spec:
         - name: nv-share
           hostPath:
             path: /var/neuvector
-        - name: docker-sock
+        - name: runtime-sock
           hostPath:
-            path: /var/run/docker.sock
+            path: /run/containerd/containerd.sock
         - name: proc-vol
           hostPath:
             path: /proc
@@ -250,7 +250,7 @@ spec:
       hostPID: true
       containers:
         - name: neuvector-enforcer-pod
-          image: neuvector/enforcer:<version>
+          image: neuvector/enforcer:4.1.1
           securityContext:
             privileged: true
           env:
@@ -268,8 +268,8 @@ spec:
             - mountPath: /lib/modules
               name: modules-vol
               readOnly: true
-            - mountPath: /var/run/docker.sock
-              name: docker-sock
+            - mountPath: /run/containerd/containerd.sock
+              name: runtime-sock
               readOnly: true
             - mountPath: /host/proc
               name: proc-vol
@@ -283,9 +283,9 @@ spec:
         - name: modules-vol
           hostPath:
             path: /lib/modules
-        - name: docker-sock
+        - name: runtime-sock
           hostPath:
-            path: /var/run/docker.sock
+            path: /run/containerd/containerd.sock
         - name: proc-vol
           hostPath:
             path: /proc
@@ -319,7 +319,7 @@ spec:
         - name: regsecret
       containers:
         - name: neuvector-scanner-pod
-          image: neuvector/scanner
+          image: neuvector/scanner:latest
           imagePullPolicy: Always
           env:
             - name: CLUSTER_JOIN_ADDR
@@ -357,7 +357,7 @@ spec:
           - name: regsecret
           containers:
           - name: neuvector-updater-pod
-            image: neuvector/updater
+            image: neuvector/updater:latest
             imagePullPolicy: Always
             lifecycle:
               postStart:

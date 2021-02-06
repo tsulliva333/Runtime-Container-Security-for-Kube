@@ -5,7 +5,7 @@ This tutorial demonstrates how NeuVector integrates with IBM Cloud Container Ser
 
 ## Why container security is critical
 
-Containers technology makes it easy to deploy applications in the cloud. Kubernetes is one of the popular choices for deploying containerized applications. Vulnerabilities in applications residing within a container can be exploited if the right protections.
+Containers technology makes it easy to deploy applications in the cloud. Kubernetes is one of the popular choices for deploying containerized applications. Vulnerabilities in applications residing within a container can be exploited if the right protections are not in place. This tutorial will guide developers to use NeuVector to monitor their containers for vulnerabilities. 
 
 ## About IBM Cloud
 
@@ -36,6 +36,7 @@ After the prerequistes are met, this tutorial should take you approximately 30 m
 1. [Instantiate a Kubernetes cluster in IBM Cloud](#1-instantiate-a-kubernetes-cluster-in-ibm-cloud)
 2. [Deploy NeuVector onto the Kubernetes cluster](#2-deploy-neuvector-onto-the-Kubernetes-cluster)
 3. [Generate test traffic by running sample applications](#3-generate-test-traffic-by-running-sample-applications)
+4. [Log into the NeuVector console.](#4-log-into-the-neuvector-console.)
 
 
 ### 1. Instantiate a Kubernetes cluster in IBM Cloud
@@ -118,53 +119,6 @@ You should get a response `secret/regsecret created`
 
 Note: Please contact support@neuvector.com to request that your Docker Hub ID be added to the NeuVector private registry.
 
-<!---
-## MAY REMOVE THE FOLLOWING TEXT
-================================================================================================================================================
-
-Label the node where you want to deploy the Allinone container. Replace nodename with the node name from `kubectl get nodes`:
-
-``
-$ kubectl label nodes nodename nvallinone=true
-``
-
-As an fyi, `Allinone containers` are XXXXXXXXXX.  Note, the Enforcer container will automatically be deployed on other nodes in your cluster.
-Read up on Allinone and Enforcer containers at XXXXXXXXXX
-
-You will use the ./allinone.yaml file to deploy NeuVector.  Running the following command will create the NeuVector service and pod.
-
-``
-$ kubectl create –f allinone.yaml
-``
-
-You should get the following response:
-
-``
-clusterrolebinding.rbac.authorization.k8s.io/neuvector-binding created
-service/neuvector-manager-svc created
-service/neuvector-api-svc created
-service/neuvector-cluster-svc created
-daemonset.apps/neuvector-allinone-pod created
-``
-
-Verify that everything is running
-
-``
-$ kubectl get all -n neuvector
-``
-
-You should see the following response
-
-<img src="./images/verifyAllinone.png" width="100%" height="100%" alt="Component Model"  class="inline"/>
-
-If you make any changes to your `.yaml` file; you can update the pod and service with the following command:
-
-``
-$ kubectl replace -f allinone.yaml
-``
-
-=============================================================================================================================================
--->
 
 6. Create the custom resources (CRD) for NeuVector security rules
 
@@ -231,11 +185,35 @@ neuvector-binding-view                                 28d
 neuvector-admin   28d
 ```
 
-9. Create the neuvector services and pods from the Kubernetes sample yaml below. Important! Replace the <version> tags for the manager, controller and enforcer image references in the yaml file. Also make any other modifications required for your deployment environment
+9. Create the neuvector services and pods from the Kubernetes sample yaml located in the same directory as the `README`. 
+
+**Important Notes**
+* If you want to use another version for the NeuVector's manager, controller and enforcer images, replace the <version> tags in the yaml file. The current version is 4.1.1. Also make any other modifications required for your deployment environment.  Note - since this tutorial is using IBM Cloud Kubernetes service, we are using `containerd` for Nevector's controller and enforcer pods in the yaml file. 
+
 
 ```
 $ kubectl create -f neuvector.yaml
 ```
+
+You can verify that your pods are available and running using the following command: 
+```
+$ kubectl get pod -n neuvector
+```
+
+You will see results like: 
+![Screen capture of instructions for installing CLI](images/CheckPods.png)
+
+
+You can also verify your services are running by running the command:
+```
+$ kubectl get svc -n neuvector
+```
+
+You will see results like: 
+![Screen capture of instructions for installing CLI](images/checkservices.png)
+
+
+If you see any errors, look at the `Troubleshooting` section below. 
 
 You should be able to connect to the NeuVector console and login with admin:admin, e.g. https://<public-ip>:8443 Don't forget to apply your license file after logging in so that you can see all Nodes, Enforcers and Assets.
 
@@ -249,50 +227,62 @@ If you haven’t already deployed some sample applications, now is a good time t
 
 After generating test traffic through your sample apps, log into the NeuVector console. 
 
-<!---
-### REMOVE THE FOLLOWING TEXT
-=========================================================================================================================================================
-``
-kubectl get svc -n neuvector
-``
+### 4. Log into the NeuVector console.
 
-The output will look like this:
+Since the `webui` is defined in the `.yaml` file as type `NodePort`, and IBM Cloud Kubernetes using `containerd` you will need to access an external port.
 
-<img src="./images/verifyAllinone.png" width="100%" height="100%" alt="Component Model"  class="inline"/>
-
-BTW - you can also detect the TCP port number of the NeuVector Manager direction using the following command:
-
-``
-kubectl get svc/neuvector-manager-svc -n neuvector
-``
-
-This command outputs:
-<img src="./images/Nuevector-console-port.png" width="100%" height="100%" alt="Component Model"  class="inline"/>
-
-
-You can now login to the NeuVector Manager console (WebUI) using the public IP address and port and ‘admin’ / ‘admin’ to login.
-
-Open your favorite web browser by entering:
+You can identify what the external IP address of the Neuvector service deployed on your cluster is by running the following comand:
 
 ```
-$ open https://localhost:32256  **Note port in graphic above**
+$ kubectl get nodes -o wide
 ```
 
+An example of the output: 
+![Screen capture of instructions for installing CLI](images/External-IP.png)
 
-BTW - you can also detect the TCP port number of the NeuVector Manager direction using the following command:
+You can then access the NeuVector console in a browser and login with admi:admin using the following command:
+
+* IP Addr: was pulled from the `get nodes` command above
+
+* Port: was pulled from the `get pod` command run in Step 9 above.  Choose the port associated with the `webui` pod. 
 
 ```
-$ kubectl get svc/neuvector-manager-svc -n neuvector
+https://169.51.195.48:32340
 ```
 
-=========================================================================================================================================================
--->
+You will see a log in:
+![Screen capture of NeuVector console login](images/Console.login.png)
 
-Feel free to browse the console, view Network Activity, the Policy Rules and other Resources.
+Once you log in, you should see the console:
+![Screen capture of NeuVector console](images/neuvector-console.png)
+
+
+Feel free to browse the console, view Network Activity, the Policy Rules and other Resources. To learn more about the using the console, see the video [NeuVector Solution overview](https://neuvector.com/videos/neuvector-solution-overview/).
 
 ## Summary
 
 IBM Cloud Container Service makes it easy to set up a Kubernetes cluster to host your containerized applications. When running such applications in production, security is required to ensure that applications are safe and communicating properly. NeuVector provides that run-time security in any cloud environment, providing a layer-7 firewall, host and container processes monitoring, and vulnerability scanning solution.  You can request a demo and access to the download by contacting NeuVector at info@neuvector.com.
+
+## Troubleshooting
+
+
+* Errors with pod deployment: when seeing errors after running the `get pod` or `get svc` commands, you can see try to dig deeper and see if there are errors when you run the command:
+
+```
+$ kubectl describe pod <pod Name>  -n neuvector
+```
+
+* If `'kubectl replace -f neuvector.yaml'` does not work you can edit can force Kubernetes to re-read the .yaml file to update a specific pod configuration (e.g. image version) by running the command (example below shows an update to the webui pod):
+
+```
+$ kubectl edit svc neuvector-service-webui -n neuvector
+```
+
+* Sometimes unexplainable errors occur with the pod. Ensure you still have your secret established. You can verify by using the following command:
+
+```
+get secret regsecret -n neuvector --output="jsonpath={.data.\.dockerconfigjson}" | base64 --d -
+```
 
 ## Next Steps
 
