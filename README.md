@@ -264,7 +264,7 @@ Feel free to browse the console, view Network Activity, the Policy Rules and oth
 
 ## Summary
 
-IBM Cloud Container Service makes it easy to set up a Kubernetes cluster to host your containerized applications. When running such applications in production, security is required to ensure that applications are safe and communicating properly. NeuVector provides that run-time security in any cloud environment, providing a layer-7 firewall, host and container processes monitoring, and vulnerability scanning solution.  You can request a demo and access to the download by contacting NeuVector at info@neuvector.com.
+IBM Cloud Kubernetes Service makes it easy to set up a Kubernetes cluster to host your containerized applications. When running such applications in production, security is required to ensure that applications are safe and communicating properly. NeuVector provides that run-time security in any cloud environment, providing a layer-7 firewall, host and container processes monitoring, and vulnerability scanning solution.  You can request a demo and access to the download by contacting NeuVector at info@neuvector.com.
 
 ## Troubleshooting
 
@@ -289,9 +289,9 @@ get secret regsecret -n neuvector --output="jsonpath={.data.\.dockerconfigjson}"
 
 ## Next Steps
 
-Learn more about the IBM Cloud Container Service and NeuVector.  Additionally, further your knowledge of containers more generally.
+Learn more about the IBM Cloud Kubernetes Service and NeuVector.  Additionally, further your knowledge of containers more generally.
 
-* [IBM Cloud Container Service](https://www.ibm.com/cloud/kubernetes-service?cm_mmc=OSocial_Blog-_-Cloud_Cloud+Platform-_-WW_WW-_-NeuVector&cm_mmca1=000023UA&cm_mmca2=10002833&)
+* [IBM Cloud Kubernetes Service](https://www.ibm.com/cloud/kubernetes-service?cm_mmc=OSocial_Blog-_-Cloud_Cloud+Platform-_-WW_WW-_-NeuVector&cm_mmca1=000023UA&cm_mmca2=10002833&)
 
 * [NeuVector](https://go.neuvector.com/tryse)
 
@@ -302,6 +302,8 @@ Learn more about the IBM Cloud Container Service and NeuVector.  Additionally, f
 * [Learning Path: Kubernetes](https://developer.ibm.com/series/kubernetes-learning-path/)
 
 * [Kubernetes Deployment onto NeuVector](https://docs.neuvector.com:1594/deploying/kubernetes)
+
+For general questions, engage our team via Slack by [registering here](https://cloud.ibm.com/kubernetes/slack), and join the discussion in the #general channel on our [public IBM Cloud Slack](https://ibm-cloud-success.slack.com/).
 
 
 
