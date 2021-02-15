@@ -1,5 +1,44 @@
 # Complete run-time container security for production Kubernetes workloads
 
+abstract: "Integrating with IBM Cloud Container Service to provide complete run-time container security for your production Kubernetes workloads."
+
+authors:
+  - name: "Laura Bennett"
+    email: "lbenn@us.ibm.com"
+  - name: "Chris Rosen"
+    email: "crosen@us.ibm.com"
+
+completed_date: ""
+last_updated: ""
+
+components:
+  - "kubernetes"
+  - "containers"
+  - "NeuVector"
+
+draft: true
+
+excerpt: ""
+
+meta_description: ""
+
+meta_keywords: "containers, kubernetes, IBM Cloud Kubernetes Service"
+
+primary_tag: ""
+
+related_content:
+
+related_links:
+
+subtitle: "Complete run-time container security for production Kubernetes workloads."
+
+tags:
+  - "containers"
+
+title: "Learn about providing complete run-time container security with NeuVector?"
+
+---
+
 
 This tutorial demonstrates how NeuVector integrates with IBM Cloud Container Service to provide complete run-time container security for your production Kubernetes workloads. We are excited to partner together to demonstrate how quickly and easily users can deploy a Kubernetes cluster in IBM Cloud and then secure those workloads in this new and ever-changing container and microservice world.
 
@@ -9,7 +48,7 @@ Containers technology makes it easy to deploy applications in the cloud. Kuberne
 
 ## About IBM Cloud
 
-IBM Cloud provides users with a variety of compute choices as well as over 170 IBM and third party services. [IBM Cloud Container Service](https://www.ibm.com/cloud/kubernetes-service?cm_mmc=OSocial_Blog-_-Cloud_Cloud+Platform-_-WW_WW-_-NeuVector&cm_mmca1=000023UA&cm_mmca2=10002833&) combines Docker and Kubernetes to deliver powerful tools, an intuitive user experience, and built-in security and isolation to enable rapid delivery of applications all while leveraging Cloud Services including cognitive capabilities from Watson.
+IBM Cloud provides users with a variety of compute choices as well as over 170 IBM and third party services. [IBM Cloud Kubernetes Service](https://www.ibm.com/cloud/kubernetes-service?cm_mmc=OSocial_Blog-_-Cloud_Cloud+Platform-_-WW_WW-_-NeuVector&cm_mmca1=000023UA&cm_mmca2=10002833&) combines Docker and Kubernetes to deliver powerful tools, an intuitive user experience, and built-in security and isolation to enable rapid delivery of applications all while leveraging Cloud Services including cognitive capabilities from Watson.
 
 ## About NeuVector
 
