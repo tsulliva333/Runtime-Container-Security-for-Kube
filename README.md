@@ -35,7 +35,7 @@ subtitle: "Complete run-time container security for production Kubernetes worklo
 tags:
   - "containers"
 
-title: "Learn about providing complete run-time container security with NeuVector?"
+title: "Learn about providing complete run-time container security with NeuVector"
 
 ---
 
