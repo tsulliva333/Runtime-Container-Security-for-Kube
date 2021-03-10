@@ -13,9 +13,9 @@ authors:
   - name: Chris Rosen
     email: crosen@us.ibm.com
 
-completed_date: "2021-03-09"
-last_updated: "2021-03-09"
-check_date: "2022-03-09"
+completed_date: "2021-03-10"
+last_updated: "2021-03-10"
+check_date: "2022-03-10"
 
 excerpt: "Learn how to integrate NeuVector with IBM Cloud container services to provide complete runtime container security for your production Kubernetes workloads."
 meta_description: "Integrate NeuVector with IBM Cloud container services to provide complete runtime container security for your production Kubernetes workloads."
@@ -39,8 +39,8 @@ related_links:
     url: "https://go.neuvector.com/tryse"
   - title: Deploy NeuVector to Kubernetes
     url: "https://docs.neuvector.com:1594/deploying/kubernetes"  
-  - title: "IBM Cloud Kubernetes Service"
-    url: https://www.ibm.com/cloud/kubernetes-service?cm_mmc=OSocial_Blog-_-Cloud_Cloud+Platform-_-WW_WW-_-NeuVector&cm_mmca1=000023UA&cm_mmca2=10002833&
+  - title: IBM Cloud Kubernetes Service
+    url: "https://www.ibm.com/cloud/kubernetes-service?cm_mmc=OSocial_Blog-_-Cloud_Cloud+Platform-_-WW_WW-_-NeuVector&cm_mmca1=000023UA&cm_mmca2=10002833&"
 
 ---
 Containers technology makes it easy to deploy applications in the cloud and Kubernetes is one of the popular choices for deploying containerized applications. But in this new and ever-changing container and microservices world, container security is critical. Vulnerabilities in applications residing within a container can be exploited if the right protections are not in place. This tutorial demonstrates how [NeuVector](https://neuvector.com/) integrates with the [IBM Cloud Kubernetes Service](https://www.ibm.com/cloud/kubernetes-service?cm_mmc=OSocial_Blog-_-Cloud_Cloud+Platform-_-WW_WW-_-NeuVector&cm_mmca1=000023UA&cm_mmca2=10002833&) to provide complete runtime container security for your production Kubernetes workloads. We demonstrate how quickly and easily you can deploy a Kubernetes cluster in IBM Cloud and then secure those workloads by using NeuVector to monitor your containers for vulnerabilities.
@@ -64,9 +64,9 @@ After the [Prerequisites](#prerequisites) are met, completing this tutorial shou
 ## Steps
 
 1. [Create a Kubernetes cluster in IBM Cloud](#1-create-a-kubernetes-cluster-in-ibm-cloud)
-2. [Deploy NeuVector onto your Kubernetes cluster](#2-deploy-neuvector-onto-your-Kubernetes-cluster)
+2. [Deploy NeuVector onto your Kubernetes cluster](#2-deploy-neuvector-onto-your-kubernetes-cluster)
 3. [Generate test traffic by running sample applications](#3-generate-test-traffic-by-running-sample-applications)
-4. [Log into the NeuVector console](#4-log-into-the-neuvector-console.)
+4. [Log into the NeuVector console](#4-log-into-the-neuvector-console)
 
 ### 1. Create a Kubernetes cluster in IBM Cloud
 
@@ -78,19 +78,19 @@ On the [Kubernetes Overview](https://cloud.ibm.com/kubernetes/overview/?cm_sp=ib
 
 To create a standard cluster, set the following parameters:
 
-* Select **Standard** from the list of pricing plans.
+1. Select **Standard** from the list of pricing plans.
 
-* Within the Kubernetes version list, select the current version of 1.19.8. __(EDITOR NOTE: 1.18.15 is no longer the [current version](https://cloud.ibm.com/docs/containers?topic=containers-cs_versions) as of February 16.)__
+2. Within the Kubernetes version list, select the current version of 1.19.8. __(EDITOR NOTE: 1.18.15 is no longer the [current version](https://cloud.ibm.com/docs/containers?topic=containers-cs_versions) as of February 16.)__
 
-* From the **Infrastructure** options, choose **Classic**.
+3. From the **Infrastructure** options, choose **Classic**.
 
-* In the **Location** section, keep the default options that are prefilled.
+4. In the **Location** section, keep the default options that are prefilled.
 
-* In the **Worker pool** section, set up the number of worker nodes for your workload. This can be resized. Leave at default of 4. __(EDITOR NOTE: 3 workers appeared as my default. And at the end of this Step, your code says 2 workers.)__
+5. In the **Worker pool** section, set up the number of worker nodes for your workload. This can be resized. Leave at default of 4. __(EDITOR NOTE: 3 workers appeared as my default. And at the end of this Step, your code says 2 workers.)__
 
-* Within the **Resource details** section, enter a name for your cluster.
+6. Within the **Resource details** section, enter a name for your cluster.
 
-* In the **Summary** pane, review the order summary and then click **Create**.
+7. In the **Summary** pane, review the order summary and then click **Create**.
 
   Worker nodes can take a few minutes to provision, but you can see the progress in the **Worker nodes** tab. When the status reaches `Ready`, you can start working with your cluster. See the [Getting started with IBM Cloud Kubernetes Service](https://cloud.ibm.com/docs/containers/cs_planning.html) documentation for more details about cluster creation.
 
@@ -104,7 +104,7 @@ $ bx cs cluster-create -name -location -workers 2 -machine-type u1cx2x4 -hardwar
 
 Now that the environment is provisioned, you can access it from the IBM Cloud CLI tool that you downloaded in the [Prerequisites](#prerequisites).
 
-First, go to the [Kubernetes clusters page](https://cloud.ibm.com/kubernetes/clusters) and click the name of the cluster that you created in [Step 1](#1-create-a-kubernetes-cluster-in-ibm-cloud).
+First, go to the [Kubernetes clusters page](https://cloud.ibm.com/kubernetes/clusters/?cm_sp=ibmdev-_-developer-tutorials-_-cloudreg) and click the name of the cluster that you created in [Step 1](#1-create-a-kubernetes-cluster-in-ibm-cloud).
 
 On your cluster page, click **Access** from the menu and follow the **Accessing your cluster** instructions to log into your cluster from your local command line interface.
 
@@ -137,7 +137,7 @@ $ curl -sL https://ibm.biz/idt-installer | bash
   ```
   You should get a response of `secret/regsecret created`.
 
-  **Note:** Contact support@neuvector.com to request that your Docker Hub ID be added to the NeuVector private registry. __(EDITOR NOTE: Should this be added to the Prerequisites section? How long will it take for someone to receive a response and can they complete this tutorial while they wait or is it a blocker?)__
+  **Note:** Contact support@neuvector.com to request that your Docker Hub ID be added to the NeuVector private registry. __(EDITOR NOTE: Should this be added to the Prerequisites section? How long will it take for someone to receive a response?)__
 
 4. Create the custom resource definition (CRD) for the NeuVector security rules.
 
@@ -153,11 +153,11 @@ $ curl -sL https://ibm.biz/idt-installer | bash
   kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/crd-k8s-1.16.yaml
   ```
 
-  You will see the following results:
+  You will see results similar to the ones in the following screen capture image.
 
-  ![Screen capture of steps to set up CRD rules](images/CRD-rules.png)
+  ![Screen capture of steps to set up CRD for the NeuVector security rules](images/CRD-rules.png)
 
-5. Add read permission to access the kubernetes API. RBAC is supported in kubernetes 1.8+ officially. Admission control is supported in kubernetes 1.9+
+5. Add read permission to access the Kubernetes API with the following commands. Note that RBAC is supported in Kubernetes 1.8+ officially and admission control is supported in Kubernetes 1.9+.
 
   ```
   kubectl create clusterrole neuvector-binding-app --verb=get,list,watch,update --resource=nodes,pods,services,namespaces
@@ -174,26 +174,25 @@ $ curl -sL https://ibm.biz/idt-installer | bash
   kubectl create rolebinding neuvector-admin --clusterrole=admin --serviceaccount=neuvector:default -n neuvector
   ```
 
-  You will see the following results:
+  You will see results similar to the ones in the following screen capture image.
 
-  ![Screen capture of steps to create the NeuVector pod and service in Kube](images/Create-NeuVector-pod-and-service.png)
+  ![Screen capture of steps to create the NeuVector pod and service in Kubernetes](images/Create-NeuVector-pod-and-service.png)
 
-
-  **NOTE** If you are upgrading NeuVector from a previous install, you may need to delete the old binding as follows:
+  **Note:** If you are upgrading NeuVector from a previous install, you may need to delete the old binding with the following commands:
 
   ```
   kubectl delete clusterrolebinding neuvector-binding
   kubectl delete clusterrole neuvector-binding
   ```
 
-6. Run the following commands to check if the neuvector/default service account is added successfully
+6. Run the following commands to check if the `neuvector:default` service account is added successfully:
 
   ```
   kubectl get clusterrolebinding  | grep neuvector
   kubectl get rolebinding -n neuvector | grep neuvector
   ```
 
-  Sample output:
+  Sample output: __(EDITOR NOTE: Your other sample outputs have been screen capture images. Why is this output presented differently? Although this is better for IBM Accessibility compliance, I think the change in format might confuse your reader.)__
 
   ```
   neuvector-binding-admission                            28d
@@ -205,7 +204,7 @@ $ curl -sL https://ibm.biz/idt-installer | bash
   neuvector-admin   28d
   ```
 
-7. Create the NeuVector services and pods from the Kubernetes sample YAML located in the same directory as the `README` file.
+7. Create the NeuVector services and pods from the Kubernetes sample YAML file located in the same directory as the README file. __(EDITOR NOTE: Are you referring to the YAML file within the [GitHub repo](https://github.com/IBM/Runtime-Container-Security-for-Kube/) where you put your draft README.md of this tutorial? Since the final version of this tutorial will be published on IBM Developer, the information from that YAML file should be integrated into the text of this tutorial, perhaps as a code snippet.)__
 
   **Important note:** If you want to use another version for the NeuVector's manager, controller, and enforcer images, replace the `<version>` tags in the YAML file. The current version is 4.1.1. Also make any other modifications required for your deployment environment. Note that since this tutorial is using the IBM Cloud Kubernetes Service, we are using `containerd` for Nevector's controller and enforcer pods in the YAML file.
 
@@ -241,7 +240,7 @@ $ curl -sL https://ibm.biz/idt-installer | bash
 
 ### 3. Generate test traffic by running sample applications
 
-If you have not already deployed some sample applications, now is a good time to do that so that you'll be able to see application containers running and view their connections in NeuVector.
+If you have not already deployed some sample applications, now is a good time to do that so that you'll be able to see application containers running and view their connections in NeuVector. __(EDITOR NOTE: Can you provide a sample application file and instructions of how to deploy it? Or a link to another IBM Developer tutorial or IBM Cloud documentation that guides the reader through that process?)__
 
 After generating test traffic through your sample apps, log into the NeuVector console.
 
@@ -272,7 +271,7 @@ You will see a login screen such as the one in the following screen capture imag
 
 ![Screen capture of NeuVector console login](images/Console-login.png)
 
-If you have not yet received a temporary license for using the NeuVector console, go to [Red Hat Marketplace](https://marketplace.redhat.com/en-us/products/neuvector-operator) and request a free trial. This will give you a license to access the console.
+If you have not yet received a temporary license for using the NeuVector console, __(EDITOR NOTE: This is confusing to me. You didn't instruct the reader to get a license in the Prerequisites.)__ go to [Red Hat Marketplace](https://marketplace.redhat.com/en-us/products/neuvector-operator) and request a free trial. This will give you a license to access the console. __(EDITOR NOTE: Perhaps you should rewrite this tutorial so that the first step for the reader is to register for a free trial license from the Red Hat Marketplace.)__
 
 Once you log in, you should see the NeuVector console.
 
